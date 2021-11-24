@@ -62,5 +62,8 @@ button{
   }
   button{
     box-shadow: 5px 4px 30px 10px rgba(0,0,0,.5);
+    position: absolute;
+    right: 10%;
+    bottom: 35%;
   }
 }

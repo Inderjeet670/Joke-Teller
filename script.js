@@ -7,13 +7,36 @@ const button = document.querySelector('button');
 const audioElement = document.querySelector('#audio');
 const apiUrl = '26f01c4c5cc74253870e123e8ce9b4c0';
 const language = 'en-us';
-const jokeString = '';
+var jokeString = '';
 const URL = `http://api.voicerss.org/?key=${apiUrl}&hl=${language}&src=${jokeString}`;
 
-function text(){
+function toggleButton(){
+    button.disabled = !button.disabled;
+}
+async function getJokes(){
+    try {
+    const response = await fetch("https://v2.jokeapi.dev/joke/Any");
+    const data = await response.json();
+    if(data.setup){
+        jokeString = `${data.setup}....${data.delivery}`;
+        text(jokeString)
+    }
+    else{
+        jokeString = data.joke;
+        text(jokeString)
+
+    }
+    } catch (error) {
+        
+    }
+    button.disabled = true;
+
+}
+
+function text(joke){
     VoiceRSS.speech({
         key: '26f01c4c5cc74253870e123e8ce9b4c0',
-        src: 'Hello, world!',
+        src: joke,
         hl: 'en-us',
         v: 'Linda',
         r: 0, 
@@ -22,4 +45,8 @@ function text(){
         ssml: false
     });
 }
-text();
+
+
+
+button.addEventListener('click',getJokes);
+audioElement.addEventListener('ended',toggleButton);
